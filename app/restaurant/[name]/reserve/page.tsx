@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 const RestaurantReserve = () => {
   return (
-    <div className="border-t h-screen">
-      <div className="py-9 w-3/5 m-auto">
+    <div className="border-t h-screen m-11">
+      <div className="py-9 w-3/5 mt-auto">
         {/* HEADER */}
         <div>
           <h3 className="font-bold">You're almost done!</h3>

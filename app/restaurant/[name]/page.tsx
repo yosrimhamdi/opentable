@@ -2,7 +2,7 @@ import NavBar from './NavBar';
 
 const RestaurantDetails = () => {
   return (
-    <div>
+    <>
       <div className="bg-white w-[70%] rounded p-3 shadow">
         <NavBar />
         <div className="mt-4 border-b pb-6">
@@ -127,7 +127,7 @@ const RestaurantDetails = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

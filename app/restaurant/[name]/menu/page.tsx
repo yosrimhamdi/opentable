@@ -2,7 +2,7 @@ import NavBar from '../NavBar';
 
 const RestaurantMenu = () => {
   return (
-    <div>
+    <>
       <div className="bg-white w-[100%] rounded p-3 shadow">
         <NavBar />
         <main className="bg-white mt-5">
@@ -25,7 +25,7 @@ const RestaurantMenu = () => {
         </main>
         {/* MENU */}
       </div>
-    </div>
+    </>
   );
 };
 
