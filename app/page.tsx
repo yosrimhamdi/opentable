@@ -1,7 +1,8 @@
 import { Cuisine, Location, PRICE, PrismaClient } from '@prisma/client';
 
-import Search from './components/Search';
-import Restaurant from './components/Restaurant';
+import Search from './common/Search';
+import Link from 'next/link';
+import Price from './common/Price';
 
 export interface RestaurantType {
   id: number;
@@ -37,18 +38,30 @@ export default async () => {
 
   return (
     <div>
-      <div className="h-64 bg-gradient-to-r from-[#0f1f47] to-[#5f6984] p-2">
-        <div className="text-center mt-10">
-          <h1 className="text-white text-5xl font-bold mb-2">
-            Find your table for any occasion
-          </h1>
-          <Search />
-        </div>
-      </div>
+      <Search />
       <div className="py-3 px-36 mt-10 flex flex-wrap justify-center">
-        {restaurants.map(restaurant => (
-          <Restaurant key={restaurant.id} restaurant={restaurant} />
-        ))}
+        {restaurants.map(
+          ({ name, slug, main_image, price, location, cuisine }) => (
+            <Link href={`/restaurant/${slug}`}>
+              <div className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer">
+                <img src={main_image} alt="" className="w-full h-36" />
+                <div className="p-1">
+                  <h3 className="font-bold text-2xl mb-2">{name}</h3>
+                  <div className="flex items-start">
+                    <div className="flex mb-2">*****</div>
+                    <p className="ml-2">77 reviews</p>
+                  </div>
+                  <div className="flex text-reg font-light capitalize">
+                    <p className=" mr-3">{location.name}</p>
+                    <Price price={price} />
+                    <p>{cuisine.name}</p>
+                  </div>
+                  <p className="text-sm mt-1 font-bold">Booked 3 times today</p>
+                </div>
+              </div>
+            </Link>
+          )
+        )}
       </div>
     </div>
   );
