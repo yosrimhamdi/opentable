@@ -30,6 +30,7 @@ model Restaurant {
   cuisine     Cuisine  @relation(fields: [cuisine_id], references: [id])
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+  Review      Review[]
 }
 
 model Menu {
@@ -57,4 +58,29 @@ model Cuisine {
   created_at DateTime     @default(now())
   updated_at DateTime     @updatedAt
   Restaurant Restaurant[]
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  first_name String
+  last_name  String
+  city       String
+  email      String
+  phone      String
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Review     Review[]
+}
+
+model Review {
+  id            Int        @id @default(autoincrement())
+  text          String
+  rating        Float
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  restaurant_id Int
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+  user_id       Int
+  user          User       @relation(fields: [user_id], references: [id])
 }
