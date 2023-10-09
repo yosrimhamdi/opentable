@@ -16,7 +16,7 @@ enum PRICE {
 model Restaurant {
   id          Int      @id @default(autoincrement())
   name        String
-  slug        String
+  slug        String   @unique
   main_image  String
   images      String[]
   description String

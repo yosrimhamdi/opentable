@@ -11,6 +11,8 @@ export interface RestaurantType {
   cuisine: Cuisine;
   location: Location;
   price: PRICE;
+  description: string;
+  images: string[];
 }
 
 const getRestaurants = async (): Promise<RestaurantType[]> => {
@@ -24,6 +26,8 @@ const getRestaurants = async (): Promise<RestaurantType[]> => {
       cuisine: true,
       location: true,
       price: true,
+      description: true,
+      images: true,
     },
   });
 };
