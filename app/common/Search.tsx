@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 
 const Search = () => {
   const router = useRouter();
-  const [city, setCity] = useState('');
+  const [location, setLocation] = useState('');
 
   const onFormSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    if (city) {
-      router.push(`/search?city=${city}`);
+    if (location) {
+      router.push(`/search?location=${location}`);
     }
   };
 
@@ -29,8 +29,8 @@ const Search = () => {
             className="rounded  mr-3 p-2 w-[450px]"
             type="text"
             placeholder="State, city or town"
-            onChange={e => setCity(e.target.value)}
-            value={city}
+            onChange={e => setLocation(e.target.value)}
+            value={location}
           />
           <button className="rounded bg-red-600 px-9 py-2 text-white">
             Let's go
