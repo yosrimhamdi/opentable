@@ -1,10 +1,16 @@
-import { PrismaClient } from '@prisma/client';
-import NavBar from './NavBar';
+import { PrismaClient, Review as ReviewType, User } from '@prisma/client';
+
+import NavBar from './components/NavBar';
+import Review from './components/Review';
+import getAvgReviewRating from '@/utils/getAvgReviewRating';
+import RatingStars from '@/app/common/RatingStars';
 
 interface Restaurant {
+  id: number;
   name: string;
   description: string;
   images: string[];
+  reviews: ReviewType[];
 }
 
 const getRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
@@ -14,21 +20,32 @@ const getRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
       slug,
     },
     select: {
+      id: true,
       name: true,
       description: true,
       images: true,
+      reviews: {
+        select: {
+          id: true,
+          text: true,
+          rating: true,
+          user: true,
+        },
+      },
     },
   });
 
   if (!restaurant) {
-    throw new Error(); // TODO: to change here
+    throw new Error();
   }
 
   return restaurant;
 };
 
 export default async ({ params }: { params: { slug: string } }) => {
-  const { name, description, images } = await getRestaurantBySlug(params.slug);
+  const { name, description, images, reviews } = await getRestaurantBySlug(
+    params.slug
+  );
 
   return (
     <>
@@ -37,21 +54,18 @@ export default async ({ params }: { params: { slug: string } }) => {
         <div className="mt-4 border-b pb-6">
           <h1 className="font-bold text-6xl">{name}</h1>
         </div>
-        {/* TITLE */} {/* RATING */}
         <div className="flex items-end">
           <div className="ratings mt-2 flex items-center">
-            <p>*****</p>
-            <p className="text-reg ml-3">4.9</p>
+            <RatingStars avgRating={getAvgReviewRating(reviews)} />
+            <p className="text-reg ml-3">{getAvgReviewRating(reviews)}</p>
           </div>
           <div>
-            <p className="text-reg ml-4">600 Reviews</p>
+            <p className="text-reg ml-4">{reviews.length} Reviews</p>
           </div>
         </div>
-        {/* RATING */} {/* DESCRIPTION */}
         <div className="mt-4">
-          <p className="text-lg font-light">{description} </p>
+          <p className="text-lg font-light">{description}</p>
         </div>
-        {/* DESCRIPTION */} {/* IMAGES */}
         <div>
           <h1 className="font-bold text-3xl mt-10 mb-7 border-b pb-5">
             {images.length} photos
@@ -62,39 +76,18 @@ export default async ({ params }: { params: { slug: string } }) => {
             ))}
           </div>
         </div>
-        {/* IMAGES */} {/* REVIEWS */}
-        <div>
-          <h1 className="font-bold text-3xl mt-10 mb-7 borber-b pb-5">
-            What 100 people are saying
-          </h1>
+        {reviews.length && (
           <div>
-            {/* REVIEW CARD */}
-            <div className="border-b pb-7 mb-7">
-              <div className="flex">
-                <div className="w-1/6 flex flex-col items-center">
-                  <div className="rounded-full bg-blue-400 w-16 h-16 flex items-center justify-center">
-                    <h2 className="text-white text-2xl">MJ</h2>
-                  </div>
-                  <p className="text-center">Micheal Jordan</p>
-                </div>
-                <div className="ml-10 w-5/6">
-                  <div className="flex items-center">
-                    <div className="flex mr-5">*****</div>
-                  </div>
-                  <div className="mt-5">
-                    <p className="text-lg font-light">
-                      Laurie was on top of everything! Slow night due to the
-                      snow storm so it worked in our favor to have more one on
-                      one with the staff. Delicious and well worth the money.
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <h1 className="font-bold text-3xl mt-10 mb-7 borber-b pb-5">
+              What {reviews.length} people are saying
+            </h1>
+            <div>
+              {reviews.map(review => (
+                <Review key={review.id} review={review} />
+              ))}
             </div>
-            {/* REVIEW CARD */}
           </div>
-        </div>
-        {/* REVIEWS */}
+        )}
       </div>
       <div className="w-[27%] relative text-reg">
         <div className="fixed w-[15%] bg-white rounded p-3 shadow">

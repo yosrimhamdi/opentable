@@ -1,6 +1,6 @@
 import { Menu, PrismaClient } from '@prisma/client';
 
-import NavBar from '../NavBar';
+import NavBar from '../components/NavBar';
 
 const getRestaurantMenu = async (slug: string): Promise<Menu[]> => {
   const prisma = new PrismaClient();

@@ -30,7 +30,7 @@ model Restaurant {
   cuisine     Cuisine  @relation(fields: [cuisine_id], references: [id])
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
-  Review      Review[]
+  reviews     Review[]
 }
 
 model Menu {
