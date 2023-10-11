@@ -4,6 +4,7 @@ import NavBar from './components/NavBar';
 import Review from './components/Review';
 import getAvgReviewRating from '@/utils/getAvgReviewRating';
 import RatingStars from '@/app/common/RatingStars';
+import { notFound } from 'next/navigation';
 
 export interface ReviewType {
   id: number;
@@ -43,7 +44,7 @@ const getRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
   });
 
   if (!restaurant) {
-    throw new Error();
+    notFound();
   }
 
   return restaurant;
