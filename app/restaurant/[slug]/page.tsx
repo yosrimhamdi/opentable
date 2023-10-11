@@ -1,9 +1,16 @@
-import { PrismaClient, Review as ReviewType, User } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 
 import NavBar from './components/NavBar';
 import Review from './components/Review';
 import getAvgReviewRating from '@/utils/getAvgReviewRating';
 import RatingStars from '@/app/common/RatingStars';
+
+export interface ReviewType {
+  id: number;
+  text: string;
+  rating: number;
+  user: User;
+}
 
 interface Restaurant {
   id: number;
@@ -78,7 +85,7 @@ export default async ({ params }: { params: { slug: string } }) => {
         </div>
         {reviews.length && (
           <div>
-            <h1 className="font-bold text-3xl mt-10 mb-7 borber-b pb-5">
+            <h1 className="font-bold text-3xl mt-10 mb-7 border-b pb-5">
               What {reviews.length} people are saying
             </h1>
             <div>

@@ -1,9 +1,8 @@
-import { User } from '@prisma/client';
-
 import RatingStars from '@/app/common/RatingStars';
 import getAvgReviewRating from '@/utils/getAvgReviewRating';
+import { ReviewType } from '../page';
 
-export default ({ review }: { review: { text: string; user: User } }) => {
+export default ({ review }: { review: ReviewType }) => {
   const {
     user: { first_name, last_name },
     text,
