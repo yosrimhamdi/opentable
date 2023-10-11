@@ -7,7 +7,7 @@ import halfStart from './half-star.png';
 export default ({ avgRating }: { avgRating: number }) => {
   const starts = [];
 
-  for (let i: number = 0; i < 5; i++) {
+  for (let i: number = 0; i < Math.ceil(avgRating); i++) {
     if (avgRating - i >= 1) {
       starts.push(fullStart);
       continue;
