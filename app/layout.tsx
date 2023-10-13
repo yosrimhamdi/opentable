@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
+import SignUpModal from './components/SignUpModal';
+import SignInModal from './components/SignInModal';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -26,10 +29,8 @@ export default function RootLayout({
               </Link>
               <div>
                 <div className="flex">
-                  <button className="bg-blue-400 text-white border p-1 px-4 rounded mr-3">
-                    Sign in
-                  </button>
-                  <button className="border p-1 px-4 rounded">Sign up</button>
+                  <SignInModal />
+                  <SignUpModal />
                 </div>
               </div>
             </nav>
