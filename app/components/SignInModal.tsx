@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
 
 import Modal from './Modal';
 import handleInputChange from './handleInputChange';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default () => {
+  const { setter, ...rest } = useContext(AuthContext);
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -21,8 +23,7 @@ export default () => {
       'http://localhost:3000/api/auth/signin',
       form
     );
-
-    console.log(response);
+    setter({ ...rest, user: response.data.user });
   };
 
   return (

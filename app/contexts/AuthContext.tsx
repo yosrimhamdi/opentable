@@ -1,41 +1,49 @@
+'use client';
+
+import React, { useState, createContext, useEffect } from 'react';
 import { User } from '@prisma/client';
-import { createContext, Dispatch, SetStateAction, useState } from 'react';
+import axios from 'axios';
 
-interface X {
+interface State {
   loading: boolean;
-  user: User | null;
   error: string | null;
+  user: User | null;
 }
 
-interface SetterType {
-  setter: Dispatch<SetStateAction<X>>;
+interface AuthState extends State {
+  setter: React.Dispatch<React.SetStateAction<State>>;
 }
 
-interface AuthContextType extends X {
-  setter?: SetterType;
-}
-
-const Context = createContext({
+export const AuthContext = createContext<AuthState>({
   loading: false,
-  user: null,
   error: null,
+  user: null,
+  setter: () => {},
 });
 
 export default ({ children }: { children: React.ReactNode }) => {
-  const [auth, setAuth] = useState<AuthContextType>({
-    loading: false,
+  const [auth, setter] = useState<State>({
+    loading: true,
     user: null,
     error: null,
   });
 
+  useEffect(() => {
+    (async () => {
+      const response = await axios.get('http://localhost:3000/api/auth/me');
+      setter({ ...auth, user: response.data.user });
+    })();
+  }, []);
+
   return (
-    <Context.Provider
+    <AuthContext.Provider
       value={{
         ...auth,
-        setter: setAuth,
+        setter,
       }}
     >
+      <div>{auth.user && `auth as : ${auth.user.first_name}`}</div>
       {children}
-    </Context.Provider>
+    </AuthContext.Provider>
   );
 };

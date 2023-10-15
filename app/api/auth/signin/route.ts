@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 import { getUserByEmail } from '@/prisma/users';
 import { createToken } from '@/utils/token';
@@ -17,5 +18,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     return NextResponse.json({ error: 'Wrong password' });
   }
 
-  return NextResponse.json({ token: createToken(user.id) });
+  cookies().set('token', createToken(user.id));
+
+  return NextResponse.json({ user });
 };

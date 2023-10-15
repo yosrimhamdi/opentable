@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import SignUpModal from './components/SignUpModal';
 import SignInModal from './components/SignInModal';
+import AuthContext from './contexts/AuthContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,20 +23,22 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="bg-gray-100 min-h-screen w-screen">
-          <div className="max-w-screen-2xl m-auto bg-white">
-            <nav className="bg-white p-2 flex justify-between">
-              <Link href="/" className="font-bold text-gray-700 text-2xl">
-                OpenTable
-              </Link>
-              <div>
-                <div className="flex">
-                  <SignInModal />
-                  <SignUpModal />
+          <AuthContext>
+            <div className="max-w-screen-2xl m-auto bg-white">
+              <nav className="bg-white p-2 flex justify-between">
+                <Link href="/" className="font-bold text-gray-700 text-2xl">
+                  OpenTable
+                </Link>
+                <div>
+                  <div className="flex">
+                    <SignInModal />
+                    <SignUpModal />
+                  </div>
                 </div>
-              </div>
-            </nav>
-            {children}
-          </div>
+              </nav>
+              {children}
+            </div>
+          </AuthContext>
         </div>
       </body>
     </html>

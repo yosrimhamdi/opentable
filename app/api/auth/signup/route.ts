@@ -1,10 +1,11 @@
 import { User } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 import { createUser, getUserByEmail } from '@/prisma/users';
 import { createToken } from '@/utils/token';
 
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest, res: NextResponse) => {
   const { first_name, last_name, email, password }: User = await req.json();
   let user = await getUserByEmail(email);
 
@@ -12,5 +13,7 @@ export const POST = async (req: NextRequest) => {
     user = await createUser(first_name, last_name, email, password);
   }
 
-  return NextResponse.json({ token: createToken(user.id) });
+  cookies().set('token', createToken(user.id));
+
+  return NextResponse.json({ user });
 };

@@ -1,14 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import axios from 'axios';
 
 import Modal from './Modal';
 import handleInputChange from './handleInputChange';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default () => {
+  const { setter, ...rest } = useContext(AuthContext);
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     passwordConfirm: '',
@@ -18,8 +21,12 @@ export default () => {
     handleInputChange(e, form, setForm);
   };
 
-  const signUp = () => {
-    console.log(form);
+  const signUp = async () => {
+    const response = await axios.post(
+      'http://localhost:3000/api/auth/signup',
+      form
+    );
+    setter({ ...rest, user: response.data.user });
   };
 
   return (
@@ -29,16 +36,16 @@ export default () => {
           type="text"
           className="border rounded p-2 py-3 w-[49%]"
           placeholder="First Name"
-          name="firstName"
-          value={form.firstName}
+          name="first_name"
+          value={form.first_name}
           onChange={onInputChange}
         />
         <input
           type="text"
           className="border rounded p-2 py-3 w-[49%]"
           placeholder="Last Name"
-          name="lastName"
-          value={form.lastName}
+          name="last_name"
+          value={form.last_name}
           onChange={onInputChange}
         />
       </div>
